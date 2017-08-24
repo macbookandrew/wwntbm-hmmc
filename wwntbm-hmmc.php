@@ -68,6 +68,12 @@ function hmmc_post_type() {
         'items_list_navigation' => 'Resources list navigation',
         'filter_items_list'     => 'Filter resources list',
     );
+    $rewrite = array(
+        'slug'                => 'resources',
+        'with_front'          => true,
+        'pages'               => true,
+        'feeds'               => true,
+    );
     $args = array(
         'label'                 => 'Resource',
         'description'           => 'Resource',
@@ -86,6 +92,7 @@ function hmmc_post_type() {
         'has_archive'           => true,
         'exclude_from_search'   => false,
         'publicly_queryable'    => true,
+        'rewrite'               => $rewrite,
         'capability_type'       => 'page',
         'show_in_rest'          => true,
     );
