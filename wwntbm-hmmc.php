@@ -121,3 +121,25 @@ function hmmc_acf_json_load_point( $path ) {
     return $paths;
 }
 add_filter( 'acf/settings/load_json', 'hmmc_acf_json_load_point' );
+
+/**
+ * Add download link
+ * @param  string $content HTML content
+ * @return string HTML content with download button added
+ */
+function hmmc_download_link( $content ) {
+    if ( 'hmmc_resource' == get_post_type() && get_field( 'download_url' ) ) {
+        $content = '<p><a href="' . get_field( 'download_url' ) . '" target="_blank" class="download button">Download</a></p>' . $content;
+    }
+    return $content;
+}
+add_action( 'the_content', 'hmmc_download_link', 8 );
+add_action( 'the_excerpt', 'hmmc_download_link', 8 );
+
+/**
+ * Add basic styles
+ */
+function hmmc_styles() {
+    wp_enqueue_style( 'hmmc-custom-styles', plugin_dir_url( __FILE__ ) . 'hmmc-resources.css' );
+}
+add_action( 'wp_enqueue_scripts', 'hmmc_styles' );
