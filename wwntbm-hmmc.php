@@ -106,18 +106,18 @@ add_action( 'init', 'hmmc_post_type', 0 );
  * @param  string $path ACF local JSON save directory
  * @return string ACF local JSON save directory
  */
-add_filter( 'acf/settings/save_json', 'hmmc_acf_json_save_point' );
 function hmmc_acf_json_save_point( $path ) {
     return plugin_dir_path( __FILE__ ) . '/acf-json';
 }
+add_filter( 'acf/settings/save_json', 'hmmc_acf_json_save_point' );
 
 /**
  * Set ACF local JSON open directory
  * @param  array $path ACF local JSON open directory
  * @return array ACF local JSON open directory
  */
-add_filter( 'acf/settings/load_json', 'hmmc_acf_json_load_point' );
 function hmmc_acf_json_load_point( $path ) {
     $paths[] = plugin_dir_path( __FILE__ ) . '/acf-json';
     return $paths;
 }
+add_filter( 'acf/settings/load_json', 'hmmc_acf_json_load_point' );
