@@ -129,9 +129,12 @@ add_filter( 'acf/settings/load_json', 'hmmc_acf_json_load_point' );
  */
 function hmmc_download_link( $content ) {
     if ( 'hmmc_resource' == get_post_type() && get_field( 'download_url' ) ) {
-        $content = '<p><a href="' . get_field( 'download_url' ) . '" target="_blank" class="download button">Download</a></p>' . $content;
+        echo '<p>Categories: ';
+        the_category( ', ' );
+        echo '</p>
+        <p><a href="' . get_field( 'download_url' ) . '" target="_blank" class="download button">Download</a></p>';
     }
-    return $content;
+    return ob_get_clean() . $content;
 }
 add_action( 'the_content', 'hmmc_download_link', 8 );
 add_action( 'the_excerpt', 'hmmc_download_link', 8 );
@@ -179,10 +182,6 @@ function hmmc_category_shortcode( $attributes ) {
             }
 
             echo '<h2><a href="' . get_field( 'download_url' ) . '" target="_blank" title="Download Resource">' . get_the_title() . '</a></h2>';
-
-            echo '<p>Categories: ';
-            the_category( ', ', 'multiple' );
-            echo '</p>';
 
             the_content();
 
