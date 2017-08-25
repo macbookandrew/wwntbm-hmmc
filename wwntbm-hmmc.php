@@ -180,6 +180,10 @@ function hmmc_category_shortcode( $attributes ) {
 
             echo '<h2><a href="' . get_field( 'download_url' ) . '" target="_blank" title="Download Resource">' . get_the_title() . '</a></h2>';
 
+            echo '<p>Categories: ';
+            the_category( ', ', 'multiple' );
+            echo '</p>';
+
             the_content();
 
             echo '</article>';
