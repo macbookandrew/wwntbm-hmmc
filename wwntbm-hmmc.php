@@ -175,7 +175,7 @@ function hmmc_category_shortcode( $attributes ) {
             echo '<article id="post-' . get_the_ID() . '" '; post_class(); echo '>';
 
             if ( has_post_thumbnail() ) {
-                echo '<a href="' . get_field( 'download_url' ) . '" target="_blank" title="Download Resource">' . get_the_post_thumbnail() . '</a>';
+                echo '<a href="' . get_field( 'download_url' ) . '" target="_blank" title="Download Resource">' . get_the_post_thumbnail( get_the_ID(), 'hmmc-m' ) . '</a>';
             }
 
             echo '<h2><a href="' . get_field( 'download_url' ) . '" target="_blank" title="Download Resource">' . get_the_title() . '</a></h2>';
@@ -194,3 +194,13 @@ function hmmc_category_shortcode( $attributes ) {
     return ob_get_clean();
 }
 add_shortcode( 'hmmc_resources', 'hmmc_category_shortcode' );
+
+/**
+ * Add custom image sizes
+ */
+function hmmc_image_sizes() {
+    add_image_size( 'hmmc-sm', '450', '225', true );
+    add_image_size( 'hmmc-m', '600', '300', true );
+    add_image_size( 'hmmc-l', '900', '450', true );
+}
+add_action( 'after_setup_theme', 'hmmc_image_sizes' );
