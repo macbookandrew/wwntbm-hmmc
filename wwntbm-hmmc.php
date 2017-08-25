@@ -143,3 +143,54 @@ function hmmc_styles() {
     wp_enqueue_style( 'hmmc-custom-styles', plugin_dir_url( __FILE__ ) . 'hmmc-resources.css' );
 }
 add_action( 'wp_enqueue_scripts', 'hmmc_styles' );
+
+/**
+ * Shortcode to output category content
+ * @param  array  $attributes shortcode parameters
+ * @return string HTML output
+ */
+function hmmc_category_shortcode( $attributes ) {
+    $shortcode_attributes = shortcode_atts( array (
+        'post_type'         => 'hmmc_resource',
+        'posts_per_page'    => -1,
+        'offset'            => NULL,
+        'orderby'           => 'post_title',
+        'order'             => 'ASC',
+        'tax_terms'         => NULL,
+    ), $attributes );
+
+    $hmmc_query = new WP_Query( array_merge( $shortcode_attributes, array(
+        'tax_query'         => array(
+            'taxonomy'  => 'category',
+            'field'     => 'slug',
+            'terms'     => $shortcode_attributes['tax_terms'],
+        ),
+    )));
+
+    if ( $hmmc_query->have_posts() ) {
+        echo '<section class="hmmc-grid">';
+        while ( $hmmc_query->have_posts() ) {
+            $hmmc_query->the_post();
+
+            echo '<article id="post-' . get_the_ID() . '" '; post_class(); echo '>';
+
+            if ( has_post_thumbnail() ) {
+                echo '<a href="' . get_field( 'download_url' ) . '" target="_blank" title="Download Resource">' . get_the_post_thumbnail() . '</a>';
+            }
+
+            echo '<h2><a href="' . get_field( 'download_url' ) . '" target="_blank" title="Download Resource">' . get_the_title() . '</a></h2>';
+
+            the_content();
+
+            echo '</article>';
+        }
+        echo '</section>';
+    }
+
+    wp_reset_postdata();
+
+    ob_start();
+
+    return ob_get_clean();
+}
+add_shortcode( 'hmmc_resources', 'hmmc_category_shortcode' );
