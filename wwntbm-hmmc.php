@@ -208,3 +208,26 @@ function hmmc_image_sizes() {
     add_image_size( 'hmmc-l', '900', '450', true );
 }
 add_action( 'after_setup_theme', 'hmmc_image_sizes' );
+
+/**
+ * Include resources in default tag/category archives
+ * @param  object $query WP_Query object
+ * @return object modified WP_Query object
+ */
+function hmmc_tax_archive( $query ) {
+    if ( is_category() || is_tag() ) {
+        $post_type = get_query_var( 'post_type' );
+        if ( $post_type ) {
+            $post_type = $post_type;
+        } else {
+            $post_type = array( 'post', 'hmmc_resource' );
+            $query->set( 'orderby', 'post_title' );
+            $query->set( 'order', 'ASC' );
+            $query->set( 'posts_per_page', -1 );
+        }
+        $query->set( 'post_type', $post_type );
+    }
+
+    return $query;
+}
+add_filter('pre_get_posts', 'hmmc_tax_archive');
